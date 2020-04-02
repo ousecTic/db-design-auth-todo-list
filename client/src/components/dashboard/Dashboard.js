@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
+//components
+
+import InputTodo from "./todolist/InputTodo";
+
 const Dashboard = ({ setAuth }) => {
   const [name, setName] = useState("");
 
@@ -35,11 +39,14 @@ const Dashboard = ({ setAuth }) => {
 
   return (
     <div>
-      <h1 className="mt-5">Dashboard</h1>
-      <h2>Welcome {name}</h2>
-      <button onClick={e => logout(e)} className="btn btn-primary">
-        Logout
-      </button>
+      <div className="d-flex mt-5 justify-content-around">
+        <h2>{name} 's Todo List</h2>
+        <button onClick={e => logout(e)} className="btn btn-primary">
+          Logout
+        </button>
+      </div>
+
+      <InputTodo />
     </div>
   );
 };
