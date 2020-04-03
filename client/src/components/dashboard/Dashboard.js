@@ -4,19 +4,25 @@ import { toast } from "react-toastify";
 //components
 
 import InputTodo from "./todolist/InputTodo";
+import ListTodos from "./todolist/ListTodos";
 
 const Dashboard = ({ setAuth }) => {
   const [name, setName] = useState("");
+  const [allTodos, setAllTodos] = useState([]);
+  const [todosChange, setTodosChange] = useState(false);
 
   const getProfile = async () => {
     try {
       const res = await fetch("http://localhost:5000/dashboard/", {
-        method: "POST",
+        method: "GET",
         headers: { jwt_token: localStorage.token }
       });
 
       const parseData = await res.json();
-      setName(parseData.user_name);
+
+      setAllTodos(parseData);
+
+      setName(parseData[0].user_name);
     } catch (err) {
       console.error(err.message);
     }
@@ -35,7 +41,8 @@ const Dashboard = ({ setAuth }) => {
 
   useEffect(() => {
     getProfile();
-  }, []);
+    setTodosChange(false);
+  }, [todosChange]);
 
   return (
     <div>
@@ -46,7 +53,8 @@ const Dashboard = ({ setAuth }) => {
         </button>
       </div>
 
-      <InputTodo />
+      <InputTodo setTodosChange={setTodosChange} />
+      <ListTodos allTodos={allTodos} setTodosChange={setTodosChange} />
     </div>
   );
 };
